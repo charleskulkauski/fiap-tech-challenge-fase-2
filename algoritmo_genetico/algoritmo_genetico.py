@@ -1,17 +1,8 @@
-from geopy.geocoders import Nominatim
-from geopy.extra.rate_limiter import RateLimiter
 import random
 import math
 import copy 
 
-from database.frota_service import atualizar_capacidade_veiculo, buscar_veiculo_por_id, buscar_veiculos, cadastrar_veiculo, capacidade_disponivel_veiculo, excluir_veiculo
-from database.insumo_service import buscar_detalhes_insumo_e_veiculo
 from algoritmo_genetico.utils.utils import convert_hours_to_minutes
-
-def criar_rota_inicial(lista_ids_produtos):
-    rota = lista_ids_produtos[:]
-    random.shuffle(rota)
-    return [0] + rota + [0]
 
 def matriz_distancia(cities_locations):
     matriz = {}

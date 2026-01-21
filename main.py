@@ -340,7 +340,7 @@ elif pagina == "🏠 Partida Inicial de Veículos":
 # --- PÁGINA: GESTÃO DE OTIMIZAÇÃO DE ROTAS ---                      
 elif pagina == "🚀 Otimização":
     st.title("🚑 Sistema de Roteamento Hospitalar Inteligente")
-    st.markdown("Use Algoritmos Genéticos para otimizar a entrega de insumos médicos (Tech Challenge - Fase 2).")
+    st.markdown("Algoritmos Genéticos para otimizar a entrega de insumos médicos")
 
     placa_selecionada = None
     with st.container(border=True):
@@ -579,7 +579,7 @@ elif pagina == "🚀 Otimização":
             
         best_fitness = melhor_score
 
-        # --- SEÇÃO 3: RESULTADOS FINAIS & LLM ---
+        # --- SEÇÃO 3: RESULTADOS ---
         st.divider()
         st.markdown("### 📊 3. Resultado")
         
@@ -590,7 +590,7 @@ elif pagina == "🚀 Otimização":
         
         c1.metric("Tempo de Execução", f"{total_time:.2f} s")
         c2.metric("Inicial (Aleatório)", f"{initial_best_fitness:.2g}")
-        c3.metric("Custo Final (Otimizado)", f"{melhor_score:.2f} ({improvement:.2f}% de melhoria)")
+        c3.metric("Final (Otimizado)", f"{melhor_score:.3f} ({improvement:.2f}% de melhoria)")
 
         if melhor_score > 5000:
              st.warning("⚠️ Atenção: A rota encontrada viola restrições de carga ou autonomia. Tente trocar o veículo ou reduzir as paradas.")
