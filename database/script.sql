@@ -1,0 +1,165 @@
+create database sistema_hospitalar;
+
+use sistema_hospitalar;
+
+create table veiculo (veiculo_id int not null auto_increment , modelo_caminhao varchar(60) , placa varchar(30) , capacidade_maxima float, capacidade_disponivel float, autonomia_total integer, primary key(veiculo_id));
+create table rota (rota_id int not null auto_increment, rua varchar(180), numero integer, cidade varchar(60), complemento varchar(180), cep varchar(11), veiculo_designado_rota integer, latitude double, longitude double, foreign key(veiculo_designado_rota) references veiculo(veiculo_id), primary key (rota_id));
+create table produto (produto_id int not null auto_increment , nome varchar(30) , quantidade integer, peso float , nivel_criticidade integer, janela_entrega varchar(30), rota_designada_produto int, veiculo_designado_produto integer, primary key(produto_id), foreign key (veiculo_designado_produto) references veiculo(veiculo_id), foreign key (rota_designada_produto) references rota(rota_id));
+CREATE TABLE ponto_base (ponto_base_id INT NOT NULL AUTO_INCREMENT,
+    rua VARCHAR(180),
+    numero INTEGER,
+    cidade VARCHAR(100),
+    cep varchar(11),
+    veiculo_id integer,
+	nome_da_base varchar(100),
+    latitude double,
+    longitude double,
+    PRIMARY KEY (ponto_base_id),
+    FOREIGN KEY (veiculo_id) REFERENCES veiculo(veiculo_id)
+);
+
+-- 1) Veículos
+INSERT INTO veiculo (veiculo_id, modelo_caminhao, placa, capacidade_maxima, capacidade_disponivel, autonomia_total) VALUES
+(1, 'Mercedes Accelo 1016', 'ABC-1234', 1200.0, 1200.0, 400),
+(2, 'Ford Cargo 1317', 'DEF-5678', 800.0, 800.0, 300),
+(3, 'VW Delivery 8-160', 'GHI-9012', 1500.0, 1500.0, 500);
+
+-- 2) Ponto base (um por veículo)
+INSERT INTO ponto_base (ponto_base_id, rua, numero, cidade, cep, veiculo_id, nome_da_base, latitude, longitude) VALUES
+(1, 'R. das Flores', 100, 'Curitiba', '80010000', 1, 'Base Central Curitiba', -25.430000, -49.265000),
+(2, 'Av. Paulista', 2000, 'São Paulo', '01310000', 2, 'Base Zona Sul SP', -23.561414, -46.655881),
+(3, 'Av. Borges de Medeiros', 500, 'Porto Alegre', '90000000', 3, 'Base Porto Alegre', -30.033900, -51.230000);
+
+-- Veículo 1 (Curitiba)
+INSERT INTO rota (rota_id, rua, numero, cidade, complemento, cep, veiculo_designado_rota, latitude, longitude) VALUES
+(1, 'R. General Carneiro', 123, 'Curitiba', 'Próx. Hospital A', '80020100', 1, -25.432000, -49.269000),
+(2, 'R. XV de Novembro', 456, 'Curitiba', 'Apto 12', '80020200', 1, -25.428500, -49.265400),
+(3, 'Av. Sete de Setembro', 78, 'Curitiba', 'Entrada lateral', '80020300', 1, -25.427000, -49.262000),
+(4, 'R. João Negrão', 321, 'Curitiba', 'Clínica B', '80020400', 1, -25.425500, -49.261000),
+(5, 'R. Dr. Claudino dos Santos', 88, 'Curitiba', 'Próx. Farmácia', '80020500', 1, -25.435000, -49.270000),
+(6, 'R. Saldanha Marinho', 400, 'Curitiba', 'Hospital C', '80020600', 1, -25.436500, -49.281000),
+(19, 'Rua Dr. Faivre', 1200, 'Curitiba', 'Centro', '80020001', 1, -25.421000, -49.252000),
+(20, 'Rua Alberto Bolliger', 890, 'Curitiba', 'Água Verde', '80210001', 1, -25.458000, -49.248000),
+(21, 'Rua Padre Anchieta', 255, 'Curitiba', 'Centro', '80060002', 1, -25.428000, -49.271000),
+(22, 'Avenida Iguaçu', 1500, 'Curitiba', 'Centro Cívico', '80540000', 1, -25.448000, -49.270000),
+(23, 'Rua Trajano Reis', 150, 'Curitiba', 'Centro', '80050001', 1, -25.432500, -49.260000),
+(24, 'Avenida Winston Churchill', 930, 'Curitiba', 'Água Verde', '80230001', 1, -25.467000, -49.281000),
+(25, 'Rua Saldanha Marinho', 620, 'Curitiba', 'Centro', '80060003', 1, -25.444000, -49.278000),
+(26, 'Rua Itupava', 1120, 'Curitiba', 'Alto da XV', '80250002', 1, -25.424000, -49.268000),
+(27, 'Rua Chile', 1000, 'Curitiba', 'Centro', '80060004', 1, -25.430000, -49.250000),
+(28, 'Rua Brigadeiro Rocha', 1450, 'Curitiba', 'Centro', '80070001', 1, -25.430500, -49.237500),
+(29, 'Avenida Sete de Setembro', 150, 'Curitiba', 'Centro', '80060005', 1, -25.432500, -49.265000),
+(30, 'Rua João Negrão', 550, 'Curitiba', 'Centro', '80010002', 1, -25.421500, -49.260500),
+(31, 'Rua Presidente Carlos Cavalcanti', 890, 'Curitiba', 'Centro', '80030001', 1, -25.429500, -49.259000),
+(32, 'Rua Coronel Dulcídio', 730, 'Curitiba', 'Batel', '80220001', 1, -25.442000, -49.291000);
+
+-- Veículo 2 (São Paulo)
+INSERT INTO rota (rota_id, rua, numero, cidade, complemento, cep, veiculo_designado_rota, latitude, longitude) VALUES
+(7, 'R. Amauri', 101, 'São Paulo', 'Condomínio X', '04530000', 2, -23.593500, -46.674000),
+(8, 'R. Joaquim Floriano', 202, 'São Paulo', 'Próx. Clínica', '04534000', 2, -23.587200, -46.679800),
+(9, 'Av. Brigadeiro Faria Lima', 3000, 'São Paulo', 'Torre B', '01451000', 2, -23.573900, -46.682100),
+(10, 'R. da Consolação', 900, 'São Paulo', 'Apto 210', '01301100', 2, -23.548200, -46.648900),
+(11, 'Av. 9 de Julho', 500, 'São Paulo', 'Hospital D', '01327000', 2, -23.557900, -46.648600),
+(12, 'R. Pamplona', 150, 'São Paulo', 'Loja Y', '01405000', 2, -23.565600, -46.655100),
+(33, 'Avenida Roberto Marinho', 1800, 'São Paulo', 'Moema', '04021001', 2, -23.613000, -46.667000),
+(34, 'Rua da Figueira', 25, 'São Paulo', 'Vila Mariana', '04103001', 2, -23.587800, -46.633200),
+(35, 'Avenida Doutor Arnaldo', 900, 'São Paulo', 'Alto de Pinheiros', '05401001', 2, -23.548400, -46.659300),
+(36, 'Rua do Gasômetro', 215, 'São Paulo', 'Brás', '03004001', 2, -23.536000, -46.588000),
+(37, 'Avenida Major Sylvio de Magalhães Padilha', 1800, 'São Paulo', 'Vila Sônia', '05717001', 2, -23.627000, -46.729000),
+(38, 'Rua Jaguaré', 900, 'São Paulo', 'Jaguaré', '05323001', 2, -23.531000, -46.706000),
+(39, 'Avenida Coronel José Dias', 1500, 'São Paulo', 'Rio Pequeno', '05583001', 2, -23.547000, -46.756000),
+(40, 'Rua Barão de Tatuí', 880, 'São Paulo', 'Bela Vista', '01309001', 2, -23.549000, -46.648000),
+(41, 'Avenida Lins de Vasconcelos', 1500, 'São Paulo', 'Lins', '03510001', 2, -23.525000, -46.578000),
+(42, 'Rua Apinajés', 980, 'São Paulo', 'Perdizes', '01252001', 2, -23.543500, -46.683000),
+(43, 'Avenida Sapopemba', 5100, 'São Paulo', 'Vila Prudente', '03145001', 2, -23.597000, -46.560000);
+
+-- Veículo 3 (Porto Alegre)
+INSERT INTO rota (rota_id, rua, numero, cidade, complemento, cep, veiculo_designado_rota, latitude, longitude) VALUES
+(13, 'R. Coronel Bordini', 45, 'Porto Alegre', 'Bairro Centro', '90020100', 3, -30.032000, -51.226000),
+(14, 'Av. Independência', 600, 'Porto Alegre', 'Próx. Laboratório', '90020200', 3, -30.028500, -51.225000),
+(15, 'R. General Câmara', 120, 'Porto Alegre', 'Apto 5', '90020300', 3, -30.033500, -51.230000),
+(16, 'Av. Cristóvão Colombo', 2200, 'Porto Alegre', 'Próx. Hospital E', '90020400', 3, -30.032000, -51.208000),
+(17, 'R. da República', 88, 'Porto Alegre', 'Clínica Z', '90020500', 3, -30.035000, -51.227000),
+(18, 'R. Lima e Silva', 310, 'Porto Alegre', 'Farmácia', '90020600', 3, -30.038000, -51.225000),
+(44, 'Avenida Borges de Medeiros', 2450, 'Porto Alegre', 'Centro', '90110150', 3, -30.033800, -51.230000),
+(45, 'Rua dos Andradas', 1400, 'Porto Alegre', 'Centro Histórico', '90020001', 3, -30.032500, -51.224500),
+(46, 'Avenida Ipiranga', 2500, 'Porto Alegre', 'Centro Histórico', '90030001', 3, -30.036000, -51.227500),
+(47, 'Rua Riachuelo', 1550, 'Porto Alegre', 'Centro', '90020002', 3, -30.036500, -51.224000),
+(48, 'Avenida Osvaldo Aranha', 1800, 'Porto Alegre', 'Floresta', '90230001', 3, -30.030000, -51.225000),
+(49, 'Rua General Câmara', 430, 'Porto Alegre', 'Centro Histórico', '90010001', 3, -30.040000, -51.220000);
+
+INSERT INTO produto (produto_id, nome, quantidade, peso, nivel_criticidade, janela_entrega, rota_designada_produto, veiculo_designado_produto) VALUES
+(1,  'Soro 500ml - Caixa', 10, 6.0, 3, '08:00 - 12:00', 1, 1),
+(2,  'Máscara N95 - Pct 20', 1, 1.0, 3, '08:00 - 10:00', 1, 1),
+(3,  'Insulina - Caixa', 5, 2.5, 3, '09:00 - 11:00', 2, 1),
+(4,  'Curativo Esteril - Pct', 3, 0.9, 2, '08:00 - 18:00', 2, 1),
+(5,  'Oxímetro - Unidade', 2, 0.6, 3, '10:00 - 14:00', 3, 1),
+(6,  'Kit Cirúrgico - Caixa', 1, 12.0, 3, '08:00 - 10:00', 3, 1),
+(7,  'Caixa Equipamentos (médio)', 1, 35.0, 3, '09:00 - 16:00', 4, 1),
+(8,  'Vacina Frio - Caixa', 8, 4.0, 3, '08:00 - 12:00', 4, 1),
+(9,  'Luvas Estéril - Pct 100', 1, 2.0, 2, '08:00 - 18:00', 5, 1),
+(10, 'Soro 1000ml - Caixa', 4, 5.0, 3, '12:00 - 16:00', 5, 1),
+(11, 'Gaze - Pct', 10, 1.0, 1, '08:00 - 18:00', 6, 1),
+(12, 'Analgésico - Caixa', 6, 2.4, 2, '08:00 - 18:00', 6, 1),
+(13, 'Soro 500ml - Caixa', 8, 4.8, 3, '08:00 - 11:00', 7, 2),
+(14, 'Máscara Cirúrgica - Pct 50', 1, 1.2, 2, '09:00 - 12:00', 7, 2),
+(15, 'Insulina - Caixa', 3, 1.5, 3, '10:00 - 12:00', 8, 2),
+(16, 'Oxímetro - Unidade', 1, 0.3, 3, '08:00 - 10:00', 8, 2),
+(17, 'Tubos Coleta - Caixa', 5, 2.0, 2, '11:00 - 15:00', 9, 2),
+(18, 'Caixa Equipamentos (grande)', 1, 45.0, 3, '08:00 - 12:00', 9, 2),
+(19, 'Vacina Frio - Caixa', 6, 3.0, 3, '08:00 - 10:00', 10, 2),
+(20, 'Bomba Infusão - Unidade', 1, 18.0, 3, '09:00 - 11:00', 10, 2),
+(21, 'Luvas - Pct 200', 2, 4.0, 1, '08:00 - 18:00', 11, 2),
+(22, 'Sonda NE - Pct', 3, 1.2, 2, '13:00 - 17:00', 11, 2),
+(23, 'Gaze - Pct', 8, 0.8, 1, '08:00 - 18:00', 12, 2),
+(24, 'Analgésico - Caixa', 4, 1.6, 2, '11:00 - 16:00', 12, 2),
+(25, 'Soro 500ml - Caixa', 6, 3.6, 3, '08:00 - 12:00', 13, 3),
+(26, 'Máscara N95 - Pct 10', 1, 0.5, 3, '09:00 - 11:00', 13, 3),
+(27, 'Insulina - Caixa', 4, 2.0, 3, '08:00 - 10:00', 14, 3),
+(28, 'Oxímetro - Unidade', 1, 0.3, 3, '10:00 - 14:00', 14, 3),
+(29, 'Caixa Equipamentos (médio)', 1, 30.0, 3, '08:00 - 12:00', 15, 3),
+(30, 'Vacina Frio - Caixa', 5, 2.5, 3, '08:00 - 09:30', 15, 3),
+(31, 'Luvas - Pct 100', 2, 2.0, 1, '08:00 - 18:00', 16, 3),
+(32, 'Bomba Infusão - Unidade', 1, 18.0, 3, '09:00 - 12:00', 16, 3),
+(33, 'Gaze - Pct', 6, 0.6, 1, '08:00 - 18:00', 17, 3),
+(34, 'Analgésico - Caixa', 3, 1.2, 2, '11:00 - 15:00', 17, 3),
+(35, 'Sonda NE - Pct', 2, 0.8, 2, '08:00 - 13:00', 18, 3),
+(36, 'Oxímetro - Reserva', 1, 0.4, 3, '13:00 - 17:00', 18, 3),
+(37, 'Soro Fisiológico 500ml', 6, 3.6, 3, '08:00 - 11:00', 19, 1),
+(38, 'Luvas Nitrílicas - Pct 100', 2, 2.0, 2, '08:00 - 18:00', 19, 1),
+(39, 'Vacina Termolábil - Caixa', 4, 2.0, 3, '08:00 - 10:00', 20, 1),
+(40, 'Gaze Estéril - Pct', 5, 0.5, 1, '08:00 - 18:00', 20, 1),
+(41, 'Insulina Refrigerada', 3, 1.5, 3, '09:00 - 11:00', 21, 1),
+(42, 'Seringa Descartável - Pct', 2, 0.8, 2, '08:00 - 18:00', 21, 1),
+(43, 'Oxímetro Portátil', 1, 0.4, 3, '10:00 - 14:00', 22, 1),
+(44, 'Kit Curativo Avançado', 1, 1.2, 2, '08:00 - 16:00', 22, 1),
+(45, 'Caixa Equipamentos Leves', 1, 20.0, 3, '09:00 - 15:00', 23, 1),
+(46, 'Termômetro Digital', 3, 0.9, 1, '08:00 - 18:00', 23, 1),
+(47, 'Medicamentos Controlados', 2, 1.6, 3, '08:00 - 12:00', 24, 1),
+(48, 'Máscara Cirúrgica - Pct 50', 1, 1.2, 1, '08:00 - 18:00', 24, 1),
+(49, 'Sonda Vesical - Pct', 2, 1.0, 2, '09:00 - 13:00', 25, 1),
+(50, 'Luvas Estéreis - Pct 50', 1, 1.0, 1, '08:00 - 18:00', 25, 1),
+(51, 'Vacina Frio - Caixa', 5, 2.5, 3, '08:00 - 10:00', 33, 2),
+(52, 'Caixa Isotérmica', 1, 6.0, 2, '08:00 - 12:00', 33, 2),
+(53, 'Bomba de Infusão', 1, 18.0, 3, '09:00 - 11:00', 34, 2),
+(54, 'Equipo Macrogotas', 4, 1.2, 2, '08:00 - 18:00', 34, 2),
+(55, 'Soro Glicosado', 6, 4.2, 3, '10:00 - 13:00', 35, 2),
+(56, 'Luvas Latex - Pct 100', 2, 2.0, 1, '08:00 - 18:00', 35, 2),
+(57, 'Kit Emergência Médica', 1, 22.0, 3, '08:00 - 12:00', 36, 2),
+(58, 'Oxímetro Reserva', 1, 0.4, 2, '13:00 - 17:00', 36, 2),
+(59, 'Medicamentos Refrigerados', 3, 1.8, 3, '08:00 - 10:00', 37, 2),
+(60, 'Termômetro Clínico', 2, 0.6, 1, '08:00 - 18:00', 37, 2),
+(61, 'Caixa Equipamentos Pesados', 1, 48.0, 3, '09:00 - 15:00', 38, 2),
+(62, 'Avental Cirúrgico', 3, 1.5, 2, '08:00 - 18:00', 38, 2),
+(63, 'Soro Fisiológico 1L', 4, 5.0, 3, '08:00 - 11:00', 44, 3),
+(64, 'Luvas Nitrílicas - Pct 100', 1, 1.0, 1, '08:00 - 18:00', 44, 3),
+(65, 'Vacina Termossensível', 3, 1.5, 3, '08:00 - 09:30', 45, 3),
+(66, 'Caixa Térmica Pequena', 1, 4.0, 2, '08:00 - 12:00', 45, 3),
+(67, 'Equipamento Monitor Cardíaco', 1, 28.0, 3, '09:00 - 14:00', 46, 3),
+(68, 'Sensor Cardíaco', 2, 1.0, 2, '08:00 - 18:00', 46, 3),
+(69, 'Medicamentos Injetáveis', 4, 2.0, 3, '10:00 - 13:00', 47, 3),
+(70, 'Seringas Descartáveis', 3, 1.2, 1, '08:00 - 18:00', 47, 3),
+(71, 'Kit Atendimento Domiciliar', 1, 15.0, 2, '09:00 - 16:00', 48, 3),
+(72, 'Oxímetro Portátil', 1, 0.4, 2, '13:00 - 17:00', 48, 3),
+(73, 'Gaze Estéril - Pct', 6, 0.6, 1, '08:00 - 18:00', 49, 3),
+(74, 'Analgésico Injetável', 2, 0.8, 2, '11:00 - 15:00', 49, 3);
